@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Snapio - المحفظة المالية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --orange: #ff8c32; --bg: #f6f3ef; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 20px; }
+        .wallet-card {
+            background: linear-gradient(135deg, #ff8c32, #ffb37a);
+            color: white; padding: 30px; border-radius: 20px; text-align: center;
+            max-width: 500px; margin: 20px auto; box-shadow: 0 10px 20px rgba(255, 140, 50, 0.3);
+        }
+        .balance { font-size: 36px; font-weight: bold; margin: 10px 0; }
+        .transactions { max-width: 500px; margin: 0 auto; background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .t-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .t-item:last-child { border: none; }
+        .amount.minus { color: #e74c3c; }
+        .amount.plus { color: #27ae60; }
+        .btn-charge { background: white; color: var(--orange); border: none; padding: 10px 25px; border-radius: 20px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <h2 style="text-align: center;">محفظتي الرقمية</h2>
+
+    <div class="wallet-card">
+        <p>الرصيد المتوفر</p>
+        <div class="balance">150.00 JOD</div>
+        <button class="btn-charge">شحن الرصيد +</button>
+    </div>
+
+    <div class="transactions">
+        <h3>العمليات الأخيرة</h3>
+        <div class="t-item">
+            <div>
+                <strong>دفع عربون حجز</strong>
+                <p style="font-size: 12px; color: #888; margin: 0;">المصور: أحمد علي</p>
+            </div>
+            <div class="amount minus">- 20.00 JOD</div>
+        </div>
+        <div class="t-item">
+            <div>
+                <strong>شحن من البطاقة البنكية</strong>
+                <p style="font-size: 12px; color: #888; margin: 0;">2026-05-01</p>
+            </div>
+            <div class="amount plus">+ 50.00 JOD</div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="user-profile.html" style="color: var(--orange); text-decoration: none;">العودة للملف الشخصي</a>
+    </div>
+
+</body>
+</html>

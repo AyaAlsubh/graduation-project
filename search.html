@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapJo - البحث عن مصور</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #ff8c32; --bg: #f6f3ef; --dark: #2d3436; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; }
+        
+        header { background: #eee6de; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .logo { font-size: 24px; font-weight: bold; text-decoration: none; color: #333; }
+        .logo span { color: var(--primary); }
+
+        .search-section { padding: 40px 20px 10px; text-align: center; }
+        .search-section h2 { margin-bottom: 25px; color: var(--dark); }
+
+        /* تصميم شريط البحث */
+        .search-wrapper {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        .search-input {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: 2px solid #e0e0e0;
+            font-family: 'Cairo';
+            font-size: 16px;
+            transition: 0.3s;
+            outline: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 4px 20px rgba(255,140,50,0.15); }
+
+        .filter-container { text-align: center; margin-bottom: 30px; }
+        .filter-btn { padding: 8px 25px; margin: 5px; border-radius: 25px; border: 1px solid var(--primary); background: white; cursor: pointer; font-family: 'Cairo'; transition: 0.3s; font-weight: 600; }
+        .filter-btn.active { background: var(--primary); color: white; }
+
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px 40px 40px; max-width: 1200px; margin: 0 auto; }
+        .card { background: white; border-radius: 24px; padding: 25px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid transparent; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .card img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 3px solid var(--bg); }
+        .card h3 { margin: 10px 0 5px; color: var(--dark); }
+        .btn-details { display: inline-block; background: var(--primary); color: white; padding: 10px 35px; border-radius: 25px; text-decoration: none; font-weight: bold; margin-top: 15px; transition: 0.3s; }
+        .btn-details:hover { background: #e67e22; }
+
+        /* رسالة عند عدم وجود نتائج */
+        #noResults { display: none; text-align: center; padding: 50px; color: var(--gray); font-size: 18px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo">Snap<span>Jo</span> 📷</a>
+    <a href="user-profile.html" style="text-decoration: none; color: #333; font-weight: 600;">👤 حسابي</a>
+</header>
+
+<div class="search-section">
+    <h2>اكتشف أفضل المصورين</h2>
+    
+    <!-- شريط البحث الجديد -->
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن مصور بالاسم (مثلاً: سارة)..." onkeyup="combinedFilter()">
+    </div>
+</div>
+
+<div class="filter-container">
+    <button class="filter-btn active" data-category="all" onclick="updateCategory(this)">الكل</button>
+    <button class="filter-btn" data-category="wedding" onclick="updateCategory(this)">مناسبات</button>
+    <button class="filter-btn" data-category="portrait" onclick="updateCategory(this)">بورتريه</button>
+</div>
+
+<div id="noResults">عذراً، لا يوجد مصور بهذا الاسم في هذا القسم.. 🔍</div>
+
+<div class="results-grid" id="photographersGrid">
+    <div class="card" data-cat="wedding">
+        <img src="assets/ahmad.jpg">
+        <h3>أحمد علي</h3>
+        <p>⭐ 4.9 | مناسبات</p>
+        <a href="ahmed-profile.html" class="btn-details">التفاصيل</a>
+    </div>
+
+    <div class="card" data-cat="portrait">
+        <img src="assets/sara.jpg">
+        <h3>سارة محمد</h3>
+        <p>⭐ 4.8 | بورتريه</p>
+        <a href="sara-profile.html" class="btn-details">التفاصيل</a>
+    </div>
+
+    <div class="card" data-cat="wedding">
+        <img src="assets/ali.jpg">
+        <h3>خالد حسن</h3>
+        <p>⭐ 4.7 | مناسبات</p>
+        <a href="khalid-profile.html" class="btn-details">التفاصيل</a>
+    </div>
+</div>
+
+<script>
+    let currentCategory = 'all';
+
+    // وظيفة لتحديث الفئة المختارة عند النقر على الأزرار
+    function updateCategory(btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-category');
+        combinedFilter(); // استدعاء الفلترة المشتركة
+    }
+
+    // المنطق البرمجي الذي يجمع بين البحث النصي والتصنيف
+    function combinedFilter() {
+        const searchText = document.getElementById('searchInput').value.toLowerCase();
+        const cards = document.querySelectorAll('.card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const name = card.querySelector('h3').innerText.toLowerCase();
+            const category = card.dataset.cat;
+
+            // شرط البحث: (الفئة مطابقة OR الكل) AND (الاسم يحتوي على نص البحث)
+            const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+            const matchesSearch = name.includes(searchText);
+
+            if (matchesCategory && matchesSearch) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // إظهار رسالة "لا توجد نتائج" إذا اختفت كل الكروت
+        document.getElementById('noResults').style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+</script>
+
+</body>
+</html>

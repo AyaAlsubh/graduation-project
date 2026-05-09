@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Snapio - حجوزاتي وتقييماتي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --orange: #ff8c32; --bg: #f6f3ef; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 20px; }
+        .booking-card {
+            background: white; border-radius: 15px; padding: 20px; margin: 15px auto;
+            max-width: 600px; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-right: 5px solid #28a745;
+        }
+        .btn-rate { background: var(--orange); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        
+        /* Modal التقييم */
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .modal-content { background: white; margin: 15% auto; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
+        .stars { font-size: 30px; color: #ddd; cursor: pointer; margin: 15px 0; }
+        .stars span:hover, .stars span.active { color: #f1c40f; }
+        textarea { width: 100%; height: 80px; border-radius: 10px; border: 1px solid #ddd; padding: 10px; font-family: 'Cairo'; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <h2 style="text-align: center;">حجوزاتي المكتملة</h2>
+
+    <div class="booking-card">
+        <div class="info">
+            <h4>أحمد علي</h4>
+            <p>تم التصوير بتاريخ: 2026-04-10</p>
+        </div>
+        <button class="btn-rate" onclick="openRateModal('أحمد علي')">تقييم المصور</button>
+    </div>
+
+    <div id="rateModal" class="modal">
+        <div class="modal-content">
+            <h3>تقييم المصور: <span id="targetName"></span></h3>
+            <div class="stars" id="starRating">
+                <span onclick="setRate(1)">★</span><span onclick="setRate(2)">★</span><span onclick="setRate(3)">★</span><span onclick="setRate(4)">★</span><span onclick="setRate(5)">★</span>
+            </div>
+            <textarea id="reviewText" placeholder="اكتب رأيك في الخدمة..."></textarea>
+            <button class="btn-rate" style="width:100%" onclick="submitReview()">إرسال التقييم</button>
+            <p onclick="closeModal()" style="margin-top:10px; cursor:pointer; color:#888;">إلغاء</p>
+        </div>
+    </div>
+
+    <script>
+        function openRateModal(name) {
+            document.getElementById('targetName').innerText = name;
+            document.getElementById('rateModal').style.display = 'block';
+        }
+        function closeModal() { document.getElementById('rateModal').style.display = 'none'; }
+        
+        function setRate(n) {
+            const stars = document.querySelectorAll('.stars span');
+            stars.forEach((s, index) => {
+                s.style.color = index < n ? '#f1c40f' : '#ddd';
+            });
+        }
+
+        function submitReview() {
+            alert("شكراً لك! تم إرسال تقييمك بنجاح.");
+            closeModal();
+        }
+        function showMyBookings() {
+    const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    const container = document.getElementById('bookings-container'); // تأكد إن الـ ID موجود
+    
+    container.innerHTML = "";
+    bookings.forEach(b => {
+        const statusClass = b.status === 'تم القبول' ? 'confirmed' : 'pending';
+        container.innerHTML += `
+            <div class="booking-card" style="border-right-color: ${b.status === 'تم القبول' ? '#28a745' : '#ff8c32'}">
+                <div class="info">
+                    <h4>${b.photographerName}</h4>
+                    <p>التاريخ: ${b.date} | الوقت: ${b.time}</p>
+                </div>
+                <span class="status ${statusClass}">${b.status}</span>
+            </div>
+        `;
+    });
+}
+window.onload = showMyBookings;
+    </script>
+</body>
+</html>

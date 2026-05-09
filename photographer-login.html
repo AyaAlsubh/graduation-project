@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapJo - دخول المصورين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            /* نفس لوحة ألوان صفحة التسجيل تماماً */
+            --primary: #ff8c32; 
+            --bg: #f6f3ef; 
+            --dark: #2d3436;
+            --white: #ffffff;
+        }
+
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: var(--bg); 
+            margin: 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+        }
+
+        .container { 
+            width: 100%;
+            max-width: 450px; 
+            padding: 20px; 
+        }
+
+        .login-card { 
+            background: var(--white); 
+            padding: 45px 40px; 
+            border-radius: 24px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06); 
+            text-align: center;
+        }
+
+        h2 { 
+            color: var(--primary); 
+            font-weight: 700; 
+            margin-bottom: 10px;
+            font-size: 26px;
+        }
+
+        p {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 15px;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 14px; 
+            border-radius: 12px; 
+            border: 1px solid #dfe6e9; 
+            background: #fff;
+            font-family: inherit;
+            box-sizing: border-box; 
+            transition: 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 140, 50, 0.1);
+        }
+
+        .btn-login { 
+            width: 100%; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 30px; 
+            font-size: 18px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            margin-top: 15px;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(255, 140, 50, 0.2);
+        }
+
+        .btn-login:hover { 
+            background: #e67e22; 
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(255, 140, 50, 0.3);
+        }
+
+        .register-link {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #636e72;
+        }
+
+        .register-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="login-card">
+            <h2>مرحباً بك مجدداً</h2>
+            <p>سجل دخولك لمتابعة أعمالك في SnapJo</p>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="loginEmail" placeholder="example@mail.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="loginPass" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-login">دخول للوحة التحكم</button>
+            </form>
+
+            <div class="register-link">
+                ليس لديك حساب؟ <a href="photographer-register.html">انضم إلينا الآن</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPass').value;
+
+            // التأكد من وجود بيانات مسجلة مسبقاً
+            const savedUser = JSON.parse(localStorage.getItem('registeredPhotographer'));
+
+            if (savedUser && savedUser.email === email && savedUser.pass === pass) {
+                // حفظ جلسة الدخول الحالية
+                localStorage.setItem('currentPhotographer', JSON.stringify(savedUser));
+                window.location.href = "photographer-dashboard.html";
+            } else {
+                alert("بيانات الدخول غير صحيحة، يرجى التأكد من الإيميل وكلمة المرور");
+            }
+        });
+    </script>
+
+</body>
+</html>

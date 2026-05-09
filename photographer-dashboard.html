@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapJo Pro - لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --sidebar-bg: #1e272e; --main-bg: #f1f2f6; --accent: #ff8c32; --white: #ffffff; }
+        body { font-family: 'Cairo', sans-serif; margin: 0; display: flex; background: var(--main-bg); }
+        
+        /* Sidebar Design */
+        .sidebar { width: 260px; background: var(--sidebar-bg); color: white; height: 100vh; position: fixed; padding: 30px 20px; box-sizing: border-box; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--accent); margin-bottom: 40px; display: block; text-decoration: none; }
+        .nav-item { padding: 12px 15px; border-radius: 10px; cursor: pointer; transition: 0.3s; margin-bottom: 5px; color: #d2dae2; display: flex; align-items: center; gap: 10px; }
+        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.1); color: white; }
+        
+        /* Main Content */
+        .main { margin-right: 260px; padding: 40px; width: calc(100% - 260px); }
+        .content-section { display: none; animation: fadeIn 0.3s ease; }
+        .content-section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; }
+        .stat-card h2 { color: var(--accent); margin: 10px 0 5px; }
+
+        /* Table Design */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        th, td { padding: 15px; text-align: right; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; color: var(--gray); }
+
+        /* Settings Form */
+        .form-card { background: white; padding: 30px; border-radius: 15px; max-width: 600px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .input-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        .btn-save { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+
+        .logout-btn { color: #eb4d4b !important; margin-top: 20px; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="index.html" class="logo">SnapJo 📷</a>
+        <div class="nav-item active" onclick="showSection('stats', this)">📊 الإحصائيات</div>
+        <div class="nav-item" onclick="showSection('bookings', this)">📅 الحجوزات</div>
+        <div class="nav-item" onclick="showSection('settings', this)">⚙️ الإعدادات</div>
+        <a href="index.html" class="nav-item logout-btn" onclick="localStorage.removeItem('currentPhotographer')">🚪 تسجيل الخروج</a>
+    </div>
+
+    <div class="main">
+        <header style="margin-bottom: 30px;">
+            <h1 id="welcome-msg">أهلاً بك ✨</h1>
+        </header>
+
+        <!-- قسم الإحصائيات -->
+        <section id="stats" class="content-section active">
+            <div class="stats-grid">
+                <div class="stat-card"><h3>حجوزات الشهر</h3><h2>12</h2></div>
+                <div class="stat-card"><h3>إجمالي الأرباح</h3><h2>450 JOD</h2></div>
+                <div class="stat-card"><h3>التقييم العام</h3><h2>4.9 ⭐</h2></div>
+            </div>
+        </section>
+
+        <!-- قسم الحجوزات -->
+        <section id="bookings" class="content-section">
+            <h3>جدول الحجوزات القادمة</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>العميل</th>
+                        <th>التاريخ</th>
+                        <th>النوع</th>
+                        <th>الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>ليلى محمد</td><td>2026-05-15</td><td>بورتريه</td><td style="color: green;">مؤكد</td></tr>
+                    <tr><td>عمر خالد</td><td>2026-05-20</td><td>مناسبات</td><td style="color: orange;">قيد الانتظار</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- قسم الإعدادات -->
+        <section id="settings" class="content-section">
+            <div class="form-card">
+                <h3>تعديل الملف الشخصي</h3>
+                <div class="input-group">
+                    <label>سعر الساعة (JOD)</label>
+                    <input type="number" id="price-input" placeholder="مثلاً: 50">
+                </div>
+                <div class="input-group">
+                    <label>المنطقة</label>
+                    <input type="text" id="location-input" placeholder="مثلاً: إربد">
+                </div>
+                <button class="btn-save" onclick="alert('تم حفظ التعديلات!')">حفظ التغييرات</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // وظيفة التبديل بين الأقسام
+        function showSection(sectionId, element) {
+            // إخفاء كل الأقسام
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // إزالة الحالة النشطة من أزرار القائمة
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // إظهار القسم المطلوب
+            document.getElementById(sectionId).classList.add('active');
+            // تفعيل الزر المضغوط
+            element.classList.add('active');
+        }
+
+        window.onload = function() {
+            const session = JSON.parse(localStorage.getItem('currentPhotographer'));
+            if (session) {
+                document.getElementById('welcome-msg').innerText = "أهلاً بك، " + session.name + " ✨";
+                // تعبئة افتراضية للإعدادات بناءً على الجلسة
+                document.getElementById('price-input').value = session.price || "";
+            } else {
+                window.location.href = "photographer-login.html";
+            }
+        };
+    </script>
+</body>
+</html>

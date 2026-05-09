@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Snapio - حسابي الشخصي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #ff8c32; --bg: #f6f3ef; --sidebar: #eee6de; }
+        body { margin: 0; font-family: 'Cairo', sans-serif; background-color: var(--bg); display: flex; }
+        
+        /* القائمة الجانبية */
+        .sidebar { width: 250px; background: var(--sidebar); height: 100vh; padding: 20px; display: flex; flex-direction: column; position: fixed; right: 0; }
+        .menu-item { padding: 12px; margin: 5px 0; border-radius: 10px; text-decoration: none; color: #333; font-weight: bold; transition: 0.3s; display: block; }
+        .menu-item:hover, .menu-item.active { background: var(--primary); color: white; }
+
+        .main-content { flex: 1; margin-right: 250px; padding: 40px; text-align: center; }
+        .user-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: inline-block; min-width: 350px; position: relative; }
+        
+        /* ستايل الصورة مع أيقونة الرفع */
+        .image-container { position: relative; width: 120px; height: 120px; margin: 0 auto 15px; }
+        .user-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); }
+        .upload-btn { position: absolute; bottom: 0; left: 0; background: var(--primary); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 2px solid white; font-size: 18px; }
+
+        /* نافذة التعديل (Modal) */
+        .modal { display: none; position: fixed; z-index: 1000; right: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .modal-content { background: white; margin: 10% auto; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: right; }
+        .modal-content input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; font-family: 'Cairo'; }
+        .btn-save { background: var(--primary); color: white; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <a style="color: var(--primary);" href="index.html">Snapio 📷</a>
+        <a href="user-profile.html" class="menu-item active">👤 الملف الشخصي</a>
+        <a href="search.html" class="menu-item">🔍 ابحث عن مصور</a>
+        <a href="map.html" class="menu-item">📍 خريطة المصورين</a>
+        <a href="my-bookings.html" class="menu-item">📅 حجوزاتي</a>
+        <a href="messages.html" class="menu-item">💬 الرسائل</a>
+        <a href="wallet.html" class="menu-item">💳 المحفظة</a>
+        <hr>
+        <a href="customer-login.html" class="menu-item" style="color: #e74c3c;">🚪 تسجيل خروج</a>
+    </aside>
+
+    <main class="main-content">
+        <div class="user-card">
+            <div class="image-container">
+                <img src="https://via.placeholder.com/150" class="user-img" id="display-img">
+                <label for="img-upload" class="upload-btn">📷</label>
+                <input type="file" id="img-upload" style="display: none;" accept="image/*" onchange="previewImage(event)">
+            </div>
+
+            <h2 id="display-name">سارة أحمد</h2>
+            <p id="display-job">طالبة في جامعة اليرموك</p>
+            <p id="display-city" style="color: #888;">📍 إربد، الأردن</p>
+            
+            <button onclick="openEditModal()" style="background: #eee; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-family: 'Cairo'; margin-top: 10px;">تعديل البيانات</button>
+        </div>
+    </main>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-top: 0;">تعديل بيانات الحساب</h3>
+            
+            <label>الاسم بالكامل:</label>
+            <input type="text" id="input-name" value="سارة أحمد">
+
+            <label>التخصص / العمل:</label>
+            <input type="text" id="input-job" value="طالبة في جامعة اليرموك">
+
+            <label>المدينة:</label>
+            <input type="text" id="input-city" value="إربد، الأردن">
+
+            <button class="btn-save" onclick="saveData()">حفظ التعديلات</button>
+            <p onclick="closeEditModal()" style="text-align: center; cursor: pointer; color: #888; margin-top: 15px;">إلغاء</p>
+        </div>
+    </div>
+
+    <script>
+        // دالة تغيير صورة البروفايل
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('display-img');
+                output.src = reader.result; // تحديث مصدر الصورة بالصورة المرفوعة
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // دوال النافذة المنبثقة للبيانات
+        function openEditModal() {
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function saveData() {
+            document.getElementById('display-name').innerText = document.getElementById('input-name').value;
+            document.getElementById('display-job').innerText = document.getElementById('input-job').value;
+            document.getElementById('display-city').innerText = "📍 " + document.getElementById('input-city').value;
+
+            closeEditModal();
+            alert("تم تحديث بياناتك بنجاح!");
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('editModal')) {
+                closeEditModal();
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snapio - إنشاء حساب عميل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; font-family: 'Cairo', sans-serif; background-color: #f6f3ef;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+        header, footer { background-color: #eee6de; padding: 20px 50px; }
+        .logo { font-size: 24px; font-weight: bold; color: #333; text-decoration: none; }
+        .logo span { color: #ff8c32; }
+        
+        .main-container {
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 40px 20px; text-align: center;
+        }
+        h2 { margin-bottom: 10px; font-size: 24px; }
+        h3 { margin-bottom: 30px; color: #333; }
+
+        .auth-card {
+            background: white; padding: 40px; border-radius: 15px;
+            width: 100%; max-width: 450px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #ffbc8c;
+        }
+        .input-group { margin-bottom: 20px; text-align: right; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .input-group input {
+            width: 100%; padding: 12px; border-radius: 25px; border: 1px solid #eee6de;
+            background-color: #fdfaf7; box-sizing: border-box; outline: none;
+        }
+        .btn-submit {
+            width: 100%; background: #ff8c32; color: white; border: none;
+            padding: 12px; border-radius: 25px; font-size: 18px; font-weight: bold;
+            cursor: pointer; margin-top: 10px;
+        }
+        .switch-text { margin-top: 20px; font-size: 14px; }
+        .switch-text a { color: #ff8c32; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Snap<span>io</span> 📷</a>
+    </header>
+
+    <div class="main-container">
+        <h2>أهلاً بك في Snap<span>io</span> - ابدأ رحلة البحث عن مصورك المثالي</h2>
+        <h3>أنشئ حسابك الآن</h3>
+
+        <div class="auth-card">
+            <form action="#">
+                <div class="input-group">
+                    <label>الاسم الكامل</label>
+                    <input type="text" placeholder="أدخل اسمك الكامل">
+                </div>
+                <div class="input-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" placeholder="example@gmail.com">
+                </div>
+                <div class="input-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" placeholder="********">
+                </div>
+                <button type="submit" class="btn-submit">إنشاء حساب</button>
+            </form>
+            <p class="switch-text">لديك حساب بالفعل؟ <a href="customer-login.html">تسجيل الدخول</a></p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="logo">Snap<span>io</span> 📷</div>
+        <p>© SnapJo 2026 جميع الحقوق محفوظة</p>
+    </footer>
+</body>
+</html>
